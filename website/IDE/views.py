@@ -11,17 +11,21 @@ from json import dumps
 from django.core import serializers
 import Robot as R
 import math
+import requests
 
 
 @csrf_exempt
 @login_required
 def index(request):
+    response = requests.get("http://localhost:5000/")
+    print response
+
     if request.is_ajax(): #Pokud je pozadavek ajax, vrati posuvniky z databaze
         if request.method == 'GET':
             id = request.GET.get('id')
-            slider = serializers.serialize('json',Slider.objects.filter(block__name__contains=id)) 
-            nu_field =  serializers.serialize('json',NuField.objects.filter(block__name__contains=id)) 
-            cha_field = serializers.serialize('json',ChField.objects.filter(block__name__contains=id))      
+            slider = serializers.serialize('json',Slider.objects.filter(block__name__contains=id))
+            nu_field =  serializers.serialize('json',NuField.objects.filter(block__name__contains=id))
+            cha_field = serializers.serialize('json',ChField.objects.filter(block__name__contains=id))
             data = {
                 'slider' : slider,
                 'nu_field':nu_field,
@@ -40,8 +44,16 @@ def index(request):
                 data = request.POST.get('DTA')
                 rbt = request.POST.get('rbt')
                 ip,port,name = robot_init(rbt)
-                robot_class = R.Robot(ip,port,name)
-                prepare_data(data,robot_class)
+                ### Go to naoqi flask endpoint and start connection
+                # robot_class = R.Robot(ip,port,name)
+                payload = {
+                    "ip": ip,
+                    "port": port,
+                    "name": name
+                }
+                response = requests.post('http://localhost:5000/init-robot', json=payload)
+                print response
+                prepare_data(data)
                 R.stop = False
             return HttpResponse('')
 
@@ -53,7 +65,7 @@ def index(request):
         'lib' : lib,
         'robots' : robots
     }
-    return render(request, "home.html", data)
+    return render(request, "../templates/home.html", data)
 
 def robot_init(data):
         split_strings = data.split(" ")
@@ -82,13 +94,13 @@ def save_data(data):
             j = j + 1
         block_number += 1
         if (block_number != 1) :
-            whole_code = whole_code + "\n"    
-        whole_code = whole_code + code 
-    return whole_code    
+            whole_code = whole_code + "\n"
+        whole_code = whole_code + code
+    return whole_code
 
 
 
-def prepare_data(data, robot):
+def prepare_data(data):
     print data
     split_strings = data.split(";")
     split_strings.pop()
@@ -106,7 +118,19 @@ def prepare_data(data, robot):
                 j = j + 1
             try:
                 ### USING NAOQI API
-                exec(code)  
+                # exec(code)
+                # Sedning post request to flask server
+                payload = {
+                    "code": code
+                }
+                response = requests.post('http://localhost:5000/execute', json=payload)
+                if (response.json().get("status") == 200):
+                    print("Code executed successfully on Flask server")
+                    print("Response:", response.json())
+                else:
+                    print("Failed to execute code on Flask server")
+                    print("Error response:", response.text)
+
             except Exception, e:
                 print "Could not execute code"
                 print "Error was: ", e
