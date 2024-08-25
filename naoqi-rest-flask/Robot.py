@@ -22,3 +22,4 @@ class Robot():
         except Exception, e:
             print "Could not init robot"
             print "Error was: ", e
+            raise Exception
