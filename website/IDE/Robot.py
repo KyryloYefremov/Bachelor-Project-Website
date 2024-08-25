@@ -22,6 +22,7 @@ class Robot_Control():
 """
 stop = False
 
+### USING NAOQI API
 class Robot():
     def __init__(self, ip, port, name):
         ip = unicodedata.normalize('NFKD', ip).encode('ascii', 'ignore')

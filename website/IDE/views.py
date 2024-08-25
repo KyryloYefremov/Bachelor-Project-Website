@@ -36,6 +36,7 @@ def index(request):
                 b = Block(name=request.POST.get('name'),code=Code,alternative="",lib=Lib.objects.get(name="Sekvence"))
                 b.save()
             else:
+                ### USING NAOQI API
                 data = request.POST.get('DTA')
                 rbt = request.POST.get('rbt')
                 ip,port,name = robot_init(rbt)
@@ -104,6 +105,7 @@ def prepare_data(data, robot):
                 code = code.replace ("@r","robot")
                 j = j + 1
             try:
+                ### USING NAOQI API
                 exec(code)  
             except Exception, e:
                 print "Could not execute code"
