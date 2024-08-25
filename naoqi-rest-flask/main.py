@@ -88,6 +88,7 @@ def execute():
 
     robot_data = request.get_json()
     code = robot_data.get("code")
+    print ">>>>>", code, '\n'
 
     # Check if 'code' is not empty
     if (code):
