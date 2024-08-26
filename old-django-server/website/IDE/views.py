@@ -66,7 +66,7 @@ def index(request):
         'lib' : lib,
         'robots' : robots
     }
-    return render(request, "../templates/../templates/home.html", data)
+    return render(request, "../templates/home.html", data)
 
 def robot_init(data):
         split_strings = data.split(" ")
