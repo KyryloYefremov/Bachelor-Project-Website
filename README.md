@@ -1,4 +1,4 @@
-# Bakalářský projekt - Webové rozhraní pro interaktivní ovládání humanoidních robotů NAO a Pepper. 
+# Bakalářský projekt - Návrh aktualizace webového portálu pro ovládání robotů Nao na ITE FM. 
 
 <!--  Admin : Admin-django -->
 
