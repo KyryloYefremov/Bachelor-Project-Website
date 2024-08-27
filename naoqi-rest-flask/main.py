@@ -43,8 +43,8 @@ def init_robot():
 
     # Try to establish a connection to the robot
     try:
-        robot = R
-        # robot = R.Robot(ip, port, name)
+        # robot = R
+        robot = R.Robot(ip, port, name)
     except Exception as e:
         print "There was an error while connecting to the robot."
         print "Error was:", e
@@ -69,6 +69,7 @@ def execute():
     Trying to execute python2 code that was received from request.
     """
 
+    print "\nEXECUTE ENDPOINT\n"
     global robot
     # Check if there is a connection to the robot
     if (not robot):
@@ -88,6 +89,7 @@ def execute():
 
     robot_data = request.get_json()
     code = robot_data.get("code")
+    print ">>>>>", code, '\n'
 
     # Check if 'code' is not empty
     if (code):

@@ -18,7 +18,7 @@ import requests
 @login_required
 def index(request):
     response = requests.get("http://localhost:5000/")
-    print response
+    print response.json(), '\n'
 
     if request.is_ajax(): #Pokud je pozadavek ajax, vrati posuvniky z databaze
         if request.method == 'GET':
@@ -52,7 +52,8 @@ def index(request):
                     "name": name
                 }
                 response = requests.post('http://localhost:5000/init-robot', json=payload)
-                print response
+                print response.json(), '\n'
+
                 prepare_data(data)
                 R.stop = False
             return HttpResponse('')
@@ -101,7 +102,6 @@ def save_data(data):
 
 
 def prepare_data(data):
-    print data
     split_strings = data.split(";")
     split_strings.pop()
     for i in split_strings: #projde všechny bloky
@@ -120,10 +120,12 @@ def prepare_data(data):
                 ### USING NAOQI API
                 # exec(code)
                 # Sedning post request to flask server
+                print code, '\n'
                 payload = {
                     "code": code
                 }
                 response = requests.post('http://localhost:5000/execute', json=payload)
+                print response.json(), '\n'
                 if (response.json().get("status") == 200):
                     print("Code executed successfully on Flask server")
                     print("Response:", response.json())
