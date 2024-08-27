@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
-from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
-from django import forms
+
 
 class Robot(models.Model):
     name = models.CharField(max_length=50)
@@ -11,13 +11,16 @@ class Robot(models.Model):
     def __unicode__(self):
         return u'%s' % self.name
 
+
 class Lib(models.Model):
     name = models.CharField(max_length = 50)
     def __unicode__(self):
         return u'%s' % self.name
 
+
 class Sequence(models.Model):
     name = models.CharField(max_length = 50)
+
 
 class Block(models.Model):
     name = models.CharField(max_length = 50)
@@ -26,6 +29,7 @@ class Block(models.Model):
     lib = models.ForeignKey(Lib, on_delete=models.CASCADE,default='') #Odkaz ke které knihovně je přiřazen blok
     def __unicode__(self):
         return u'%s : %s' % (self.lib.name, self.name)
+
 
 class Slider(models.Model):
     name =  models.CharField(max_length = 50, default='') #Jméno posuvníku
@@ -37,6 +41,7 @@ class Slider(models.Model):
     def __unicode__(self):
         return u'%s : %s' % (self.block.name, self.name)
 
+
 class NuField(models.Model): #Number Field
     name =  models.CharField(max_length = 50, default='') #Jméno pole
     alternative = models.CharField(max_length = 300,default='')
@@ -47,6 +52,7 @@ class NuField(models.Model): #Number Field
 
     def __unicode__(self):
         return u'%s : %s' % (self.block.name, self.name)
+
 
 class ChField(models.Model): #Character Field
     name =  models.CharField(max_length = 50, default='') #Jméno pole
