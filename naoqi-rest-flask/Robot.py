@@ -1,26 +1,10 @@
 # -*- coding: utf-8 -*-
 import unicodedata
 from naoqi import ALProxy
-import time
-import math
 
 
-"""
-class Robot_Control():
-    def __init__(self,ip,name):
-        print("inicializace")
-        time.sleep(0.5)
-    def standsit(self):
-        print("standsit")
-        time.sleep(0.5)
-    def move(self,x,y,z):
-        print("moving to: x - ",x," y - ", y, " z -",z)
-        time.sleep(0.5)
-    def say(self, sentence):
-        print(sentence)
-        time.sleep(0.5)
-"""
 stop = False
+
 
 ### USING NAOQI API
 class Robot():
@@ -38,4 +22,4 @@ class Robot():
         except Exception, e:
             print "Could not init robot"
             print "Error was: ", e
-
+            raise Exception
